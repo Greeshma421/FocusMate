@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     APP_ENV: str = "development"
     APP_HOST: str = "0.0.0.0"
     APP_PORT: int = 8000
+    # Reminder offsets in minutes; code expects a list of ints. Change as needed.
+    REMINDER_OFFSETS_MINUTES: list = [10]
 
     class Config:
         env_file = "../../.env"

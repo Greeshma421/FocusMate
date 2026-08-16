@@ -18,9 +18,13 @@ async def register(user_in: UserCreate, db: AsyncSession = Depends(get_db)):
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    user = User(email=user_in.email, name=user_in.name, password_hash=AuthService.hash_password(user_in.password))
-    db.add(user)
-    await db.commit()
+    user = User()
+    user.email = user_in.email
+    user.name = user_in.name
+    user.password_hash = AuthService.hash_password(user_in.password)
+    async with db.begin():
+        db.add(user)  # type: ignore[attr-defined]
+        await db.flush()
     await db.refresh(user)
     return user
 

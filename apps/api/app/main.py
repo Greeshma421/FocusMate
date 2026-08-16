@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api.v1.routers import health, auth
+from app.api.v1.routers import health, auth, sessions
 from app.core.config import settings
 
 
