@@ -1,1 +1,1 @@
-from . import health, auth, sessions  # register routers for v1
+from . import health, auth, sessions, schedules  # register routers for v1

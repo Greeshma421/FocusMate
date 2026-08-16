@@ -25,3 +25,27 @@ class ScheduleRepository:
         q = select(Schedule).where(Schedule.id == schedule_id)
         res = await db.execute(q)
         return res.scalars().first()
+
+    @staticmethod
+    async def update_schedule(db: AsyncSession, schedule_obj: Schedule, **updates) -> Schedule:
+        for key, value in updates.items():
+            if hasattr(schedule_obj, key) and value is not None:
+                setattr(schedule_obj, key, value)
+        async with db.begin():
+            db.add(schedule_obj)  # type: ignore[attr-defined]
+            await db.flush()
+        await db.refresh(schedule_obj)
+        return schedule_obj
+
+    @staticmethod
+    async def delete_schedule(db: AsyncSession, schedule_obj: Schedule) -> None:
+        async with db.begin():
+            await db.delete(schedule_obj)
+
+    @staticmethod
+    async def list_schedules(db: AsyncSession, user_id=None):
+        q = select(Schedule)
+        if user_id:
+            q = q.where(Schedule.user_id == user_id)
+        res = await db.execute(q)
+        return res.scalars().all()

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api.v1.routers import health, auth, sessions
+from app.api.v1.routers import health, auth, sessions, schedules
 from app.core.config import settings
 
 
@@ -13,6 +13,8 @@ def create_app() -> FastAPI:
 
     app.include_router(health.router, prefix="/api/v1")
     app.include_router(auth.router, prefix="/api/v1")
+    app.include_router(sessions.router, prefix="/api/v1")
+    app.include_router(schedules.router, prefix="/api/v1")
 
     return app
 
